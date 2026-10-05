@@ -1,30 +1,10 @@
 "use client";
 
-import { useId, useState, useSyncExternalStore, type ReactNode } from "react";
-import { MESSAGE_MAX_LENGTH, PICKUP_LEAD_DAYS, type Cake, type Choice } from "@/lib/cakes";
+import Link from "next/link";
+import { useId, useState, type ReactNode } from "react";
+import { addToCart } from "@/lib/cart";
+import { MESSAGE_MAX_LENGTH, type Cake, type Choice } from "@/lib/cakes";
 import { inr } from "@/lib/content";
-
-const CART_KEY = "frostwell-cart";
-
-/** Earliest pickup as YYYY-MM-DD in the visitor's own time zone. */
-function earliestPickup() {
-  const d = new Date();
-  d.setDate(d.getDate() + PICKUP_LEAD_DAYS);
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-}
-
-// "Today" only exists in the browser; the static HTML renders without a minimum date.
-const noSubscribe = () => () => {};
-const useEarliestPickup = () => useSyncExternalStore(noSubscribe, earliestPickup, () => "");
-
-const formatDate = (iso: string) =>
-  new Date(`${iso}T00:00:00`).toLocaleDateString("en-IN", {
-    weekday: "short",
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
 
 const extraLabel = (extra: number) => (extra ? `+${inr(extra)}` : "Included");
 
@@ -33,22 +13,13 @@ export function CakeCustomiser({ cake }: { cake: Cake }) {
   const [flavourId, setFlavourId] = useState(cake.flavours[0].id);
   const [frostingId, setFrostingId] = useState(cake.frostings[0].id);
   const [message, setMessage] = useState("");
-  const [pickupDate, setPickupDate] = useState("");
-  const [showErrors, setShowErrors] = useState(false);
   const [added, setAdded] = useState(false);
-  const minDate = useEarliestPickup();
   const ids = useId();
 
   const size = cake.sizes[sizeIndex];
   const flavour = cake.flavours.find((f) => f.id === flavourId) ?? cake.flavours[0];
   const frosting = cake.frostings.find((f) => f.id === frostingId) ?? cake.frostings[0];
   const total = size.price + flavour.extra + frosting.extra;
-
-  const dateError = !pickupDate
-    ? "Choose a pickup date."
-    : minDate && pickupDate < minDate
-      ? `Pickup must be on or after ${formatDate(minDate)}.`
-      : null;
 
   // Any change means the cart button should say "Add" again.
   const edit =
@@ -58,28 +29,14 @@ export function CakeCustomiser({ cake }: { cake: Cake }) {
       setAdded(false);
     };
 
-  function addToCart() {
-    if (dateError) {
-      setShowErrors(true);
-      document.getElementById(`${ids}-date`)?.focus();
-      return;
-    }
-    const item = {
+  function add() {
+    addToCart({
       cake: cake.slug,
-      name: cake.name,
       sizeInches: size.inches,
-      flavour: flavour.name,
-      frosting: frosting.name,
+      flavourId: flavour.id,
+      frostingId: frosting.id,
       message: message.trim(),
-      pickupDate,
-      price: total,
-    };
-    try {
-      const cart = JSON.parse(localStorage.getItem(CART_KEY) ?? "[]");
-      localStorage.setItem(CART_KEY, JSON.stringify([...(Array.isArray(cart) ? cart : []), item]));
-    } catch {
-      // Storage can be unavailable (private mode); the confirmation still shows.
-    }
+    });
     setAdded(true);
   }
 
@@ -89,7 +46,7 @@ export function CakeCustomiser({ cake }: { cake: Cake }) {
       noValidate
       onSubmit={(e) => {
         e.preventDefault();
-        addToCart();
+        add();
       }}
     >
       <Fieldset legend="Size">
@@ -154,31 +111,6 @@ export function CakeCustomiser({ cake }: { cake: Cake }) {
         />
       </div>
 
-      <div>
-        <label htmlFor={`${ids}-date`} className="font-semibold text-cocoa-900">
-          Pickup date
-        </label>
-        <p id={`${ids}-date-hint`} className="text-sm text-cocoa-500">
-          {minDate
-            ? `We need ${PICKUP_LEAD_DAYS} days. Earliest pickup: ${formatDate(minDate)}.`
-            : `We need at least ${PICKUP_LEAD_DAYS} days to bake.`}
-        </p>
-        <input
-          id={`${ids}-date`}
-          type="date"
-          required
-          min={minDate || undefined}
-          value={pickupDate}
-          onChange={(e) => edit(setPickupDate)(e.target.value)}
-          aria-invalid={showErrors && !!dateError}
-          aria-describedby={`${ids}-date-hint ${ids}-date-error`}
-          className="mt-2 block min-h-12 w-full rounded-2xl bg-white px-4 text-base text-cocoa-900 ring-1 ring-cocoa-900/15 focus:outline-2 focus:outline-raspberry-600 aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-raspberry-600"
-        />
-        <p id={`${ids}-date-error`} className="mt-2 text-sm font-medium text-raspberry-700">
-          {showErrors ? dateError : null}
-        </p>
-      </div>
-
       {/* Fixed to the bottom of the screen on phones, inline on larger screens. */}
       <div data-cart-bar className="fixed inset-x-0 bottom-0 z-30 border-t border-cocoa-900/10 bg-cream-50/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-8px_24px_-12px_rgb(43_26_18/0.25)] backdrop-blur md:static md:z-auto md:rounded-3xl md:border-0 md:bg-white md:p-6 md:shadow-sm md:ring-1 md:ring-cocoa-900/5">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
@@ -201,7 +133,14 @@ export function CakeCustomiser({ cake }: { cake: Cake }) {
           </button>
         </div>
         <p role="status" className="mx-auto max-w-6xl text-sm text-cocoa-700 empty:hidden">
-          {added ? `${cake.name} added to your cart.` : ""}
+          {added ? (
+            <>
+              {cake.name} added to your cart.{" "}
+              <Link href="/cart" className="font-semibold text-raspberry-700 underline underline-offset-2">
+                View cart
+              </Link>
+            </>
+          ) : null}
         </p>
       </div>
     </form>
