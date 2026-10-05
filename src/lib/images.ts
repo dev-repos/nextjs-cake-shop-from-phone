@@ -1,7 +1,7 @@
 import prompts from "../../images/prompts.json";
 
-// Switch to "webp" once the generated photos are saved as public/images/<id>.webp.
-export const IMAGE_EXT: "svg" | "webp" = "svg";
+// Generated photos live in public/images/<id>.webp (`npm run images`); use "svg" for the placeholders.
+export const IMAGE_EXT: "svg" | "webp" = "webp";
 
 type PromptEntry = (typeof prompts.images)[number];
 export type ImageId = PromptEntry["id"];
