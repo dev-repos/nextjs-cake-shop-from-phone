@@ -1,0 +1,106 @@
+{
+  "project": "Frostwell Cakes",
+  "notes": "Every image the site uses. Generate each one at the given size, save it as public/images/<id>.webp, then set IMAGE_EXT to \"webp\" in src/lib/images.ts. Until then the site shows the SVG placeholders in public/images/<id>.svg (rebuild them with `npm run placeholders`).",
+  "style": "Warm, natural-light food photography for an independent Indian home bakery. Soft window light from the left, shallow depth of field, gentle shadows. Palette: warm cream and ivory backgrounds, rich dark chocolate browns, raspberry pink and deep red accents, small touches of gold. Real, handmade-looking cakes with slight imperfections, not plastic or CGI. No text, no logos, no watermarks, no people's faces unless stated.",
+  "images": [
+    {
+      "id": "hero-cake",
+      "usedOn": "Landing page, hero (right side on laptop, below the headline on phones)",
+      "alt": "A tall two-tier cream cake with raspberry and chocolate decorations on a cake stand",
+      "width": 1200,
+      "height": 1500,
+      "aspectRatio": "4:5",
+      "prompt": "Hero shot of a tall two-tier celebration cake on a pale ceramic cake stand. Smooth ivory buttercream with a hand-painted chocolate drip on the top tier, crowned with fresh raspberries, a few dark chocolate shards, small edible gold leaf flecks and one sprig of mint. Lower tier has subtle palette-knife texture in blush raspberry pink. Background: warm cream linen wall, out of focus, with a soft shadow of a window frame. A few loose raspberries and a cake server on a light wooden table in the foreground. Camera at cake height, 50mm, f/2.8, vertical 4:5 composition with the cake slightly right of centre and calm space at the top."
+    },
+    {
+      "id": "featured-raspberry-rose",
+      "usedOn": "Landing page, featured cakes card 1",
+      "alt": "Raspberry rose cake with piped buttercream roses",
+      "width": 1000,
+      "height": 1250,
+      "aspectRatio": "4:5",
+      "prompt": "Single-tier round cake covered in piped buttercream roses in graded shades from cream to deep raspberry, with fresh raspberries tucked between the roses and a light dusting of freeze-dried raspberry powder. One slice cut out and placed on a small cream plate beside it, showing moist vanilla sponge layers with raspberry jam and white chocolate ganache. Light wooden table, cream background, soft daylight. Vertical 4:5, three-quarter angle from slightly above."
+    },
+    {
+      "id": "featured-chocolate-truffle",
+      "usedOn": "Landing page, featured cakes card 2",
+      "alt": "Glossy dark chocolate truffle cake with a ganache drip",
+      "width": 1000,
+      "height": 1250,
+      "aspectRatio": "4:5",
+      "prompt": "Rich dark chocolate truffle cake with a mirror-glossy ganache top and a slow ganache drip down the sides, decorated with hand-rolled cocoa-dusted truffles, a few gold-leaf flecks and a thin crown of chocolate curls. Sitting on a dark walnut board on a cream linen cloth. Warm side light catching the gloss of the ganache. Vertical 4:5, eye-level, shallow depth of field, a few cocoa crumbs scattered in the foreground."
+    },
+    {
+      "id": "featured-kesar-pista",
+      "usedOn": "Landing page, featured cakes card 3",
+      "alt": "Saffron and pistachio cake with rose petals",
+      "width": 1000,
+      "height": 1250,
+      "aspectRatio": "4:5",
+      "prompt": "Kesar pista (saffron and pistachio) cake: pale saffron-tinted cream frosting with a smooth finish, the top and lower edge covered in chopped green pistachios, decorated with dried edible rose petals in raspberry pink and a few strands of saffron. Brass cake stand on a cream tablecloth, a small bowl of pistachios and saffron threads blurred in the background. Festive but elegant, warm golden light. Vertical 4:5, three-quarter angle."
+    },
+    {
+      "id": "featured-berry-naked",
+      "usedOn": "Landing page, featured cakes card 4",
+      "alt": "Semi-naked vanilla cake with fresh berries",
+      "width": 1000,
+      "height": 1250,
+      "aspectRatio": "4:5",
+      "prompt": "Three-layer semi-naked vanilla bean cake with a thin scraped coat of cream cheese frosting so the golden sponge shows through, topped with a generous pile of fresh raspberries, strawberries and blueberries, a light dusting of icing sugar and a few small white flowers. Rustic light wooden cake stand, cream background, airy morning light. Vertical 4:5, slightly above eye-level."
+    },
+    {
+      "id": "service-birthday",
+      "usedOn": "Services page, Birthday cakes card",
+      "alt": "Colourful birthday cake with candles and sprinkles",
+      "width": 1200,
+      "height": 800,
+      "aspectRatio": "3:2",
+      "prompt": "Joyful birthday cake: round cream buttercream cake with a raspberry-pink drip, chocolate sprinkles and a few hand-piped swirls, five lit thin gold candles with soft glowing flames. Party details blurred in the background: a cream paper garland, a couple of raspberry-coloured balloons, a gift box. Warm evening indoor light from the candles plus soft fill. Horizontal 3:2, cake centred, eye-level."
+    },
+    {
+      "id": "service-wedding",
+      "usedOn": "Services page, Wedding cakes card",
+      "alt": "Elegant three-tier ivory wedding cake with fresh flowers",
+      "width": 1200,
+      "height": 800,
+      "aspectRatio": "3:2",
+      "prompt": "Elegant three-tier wedding cake in smooth ivory fondant with delicate lace-pattern piping, a cascade of fresh blush and deep raspberry roses with eucalyptus leaves flowing down one side, on a gold-rimmed cake stand. Soft-focus wedding reception background with warm fairy lights (bokeh) and cream drapes. Romantic, luxurious, natural. Horizontal 3:2, the cake slightly left of centre."
+    },
+    {
+      "id": "service-corporate",
+      "usedOn": "Services page, Corporate orders card",
+      "alt": "Rectangular celebration cake and branded cupcakes on an office table",
+      "width": 1200,
+      "height": 800,
+      "aspectRatio": "3:2",
+      "prompt": "Corporate celebration spread on a clean light-oak meeting table: a rectangular sheet cake with smooth cream frosting and a neat chocolate border, next to rows of individually boxed chocolate and raspberry cupcakes in kraft boxes with cream ribbons. Plain blank cream cards on the boxes (no text or logos). Bright modern office softly blurred behind, daylight. Horizontal 3:2, three-quarter view from above."
+    },
+    {
+      "id": "service-cupcakes",
+      "usedOn": "Services page, Cupcakes card",
+      "alt": "A box of a dozen assorted cupcakes",
+      "width": 1200,
+      "height": 800,
+      "aspectRatio": "3:2",
+      "prompt": "Top-down view of an open kraft bakery box holding twelve assorted cupcakes in neat rows: chocolate cupcakes with chocolate ganache swirls, vanilla cupcakes with raspberry buttercream and a fresh raspberry, red velvet with cream cheese frosting and crumbs, and salted caramel with a caramel drizzle. Cream paper liners. Box on a cream linen surface with a few scattered sprinkles and raspberries around it. Horizontal 3:2, flat lay, soft even light."
+    },
+    {
+      "id": "service-dessert-table",
+      "usedOn": "Services page, Dessert tables card",
+      "alt": "A styled dessert table with cakes, macarons and treats",
+      "width": 1200,
+      "height": 800,
+      "aspectRatio": "3:2",
+      "prompt": "Styled event dessert table: a central two-tier cream and raspberry cake surrounded by tiers of macarons in cream, pink and chocolate, mini cheesecake jars, chocolate-dipped strawberries, small tarts and cake pops on gold and white ceramic stands. Backdrop of cream fabric with a soft garland of blush flowers and greenery. Warm event lighting, inviting and abundant but tidy. Horizontal 3:2, wide shot at table height."
+    },
+    {
+      "id": "og-image",
+      "usedOn": "Social share preview (Open Graph / WhatsApp link preview)",
+      "alt": "Frostwell Cakes: custom cakes, designed by you",
+      "width": 1200,
+      "height": 630,
+      "aspectRatio": "1.91:1",
+      "prompt": "Wide banner photo for link previews: on the right half, a cream buttercream cake with raspberry decorations and a chocolate drip on a cake stand; the left half is calm, empty warm cream background with soft texture (space where the site can overlay text later, but do not add any text yourself). Soft window light, shallow depth of field, a few raspberries and chocolate shards on the table in the foreground. Horizontal 1200x630."
+    }
+  ]
+}
