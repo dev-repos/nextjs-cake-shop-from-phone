@@ -20,6 +20,9 @@ export function SiteFooter() {
               <Link href="/" className="hover:text-raspberry-100">Home</Link>
             </li>
             <li>
+              <Link href="/cakes" className="hover:text-raspberry-100">Shop cakes</Link>
+            </li>
+            <li>
               <Link href="/services" className="hover:text-raspberry-100">Services &amp; prices</Link>
             </li>
             <li>

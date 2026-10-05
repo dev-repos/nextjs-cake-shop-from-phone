@@ -20,7 +20,7 @@ npm run lint
 npm run build
 ```
 
-Next.js 16 (App Router) + TypeScript + Tailwind CSS v4. Pages: `/` (landing), `/services`, and a `/design` placeholder.
+Next.js 16 (App Router) + TypeScript + Tailwind CSS v4. Pages: `/` (landing), `/services`, `/cakes` (shop) with a customiser at `/cakes/<slug>`, and a `/design` placeholder.
 
 ## Images
 

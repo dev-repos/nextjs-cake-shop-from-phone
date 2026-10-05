@@ -27,3 +27,10 @@ body {
   background: var(--color-cream-50);
   color: var(--color-cocoa-900);
 }
+
+/* Keep the footer clear of the fixed "Add to cart" bar on phones. */
+@media (width < 48rem) {
+  body:has([data-cart-bar]) {
+    padding-bottom: 7rem;
+  }
+}

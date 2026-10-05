@@ -102,6 +102,60 @@
       "aspectRatio": "1.91:1",
       "prompt": "Wide banner photo for link previews: on the right half, a cream buttercream cake with raspberry decorations and a chocolate drip on a cake stand; the left half is calm, empty warm cream background with soft texture (space where the site can overlay text later, but do not add any text yourself). Soft window light, shallow depth of field, a few raspberries and chocolate shards on the table in the foreground. Horizontal 1200x630. This must be one single continuous photograph of a real room: the left side is the same softly lit, out-of-focus cream wall and table that continue behind the cake, with natural light falloff; no split panel, border, frame or flat colour block.",
       "jpegCopy": "src/app/opengraph-image.jpg"
+    },
+    {
+      "id": "cake-raspberry-rose",
+      "usedOn": "Shop: Raspberry Rose card and product page",
+      "alt": "Round cake covered in piped buttercream roses shading from cream to deep raspberry, with fresh raspberries tucked between them",
+      "width": 1000,
+      "height": 1000,
+      "aspectRatio": "1:1",
+      "prompt": "Round single-tier cake completely covered in hand-piped buttercream roses graded from cream through blush to deep raspberry, fresh raspberries tucked between the roses and a light dusting of freeze-dried raspberry powder. Plain cream ceramic cake stand on a light wooden table, warm cream wall behind. Square 1:1 product photo, the whole cake centred with a little breathing room on all sides, camera slightly above eye-level at a three-quarter angle, 85mm, f/3.5, so the six shop photos look like one consistent set."
+    },
+    {
+      "id": "cake-chocolate-truffle",
+      "usedOn": "Shop: Chocolate Truffle card and product page",
+      "alt": "Dark chocolate cake with a glossy ganache coat and drip, topped with cocoa-dusted truffles and chocolate curls",
+      "width": 1000,
+      "height": 1000,
+      "aspectRatio": "1:1",
+      "prompt": "Round dark chocolate truffle cake fully coated in smooth, mirror-glossy dark ganache with a slow drip over the top edge, crowned with a ring of cocoa-dusted hand-rolled truffles, chocolate curls and a few gold-leaf flecks. Dark walnut board on cream linen, warm cream wall behind. Square 1:1 product photo, the whole cake centred with a little breathing room on all sides, camera slightly above eye-level at a three-quarter angle, 85mm, f/3.5, so the six shop photos look like one consistent set."
+    },
+    {
+      "id": "cake-kesar-pista",
+      "usedOn": "Shop: Kesar Pista card and product page",
+      "alt": "Saffron cream cake edged with chopped pistachios, topped with pink rose petals and saffron threads",
+      "width": 1000,
+      "height": 1000,
+      "aspectRatio": "1:1",
+      "prompt": "Round kesar pista cake with smooth pale saffron-yellow cream frosting, the lower edge pressed with chopped green pistachios, the top scattered with dried raspberry-pink rose petals, slivered pistachios and a few saffron threads. Small brass cake stand on a cream tablecloth, warm golden light. Square 1:1 product photo, the whole cake centred with a little breathing room on all sides, camera slightly above eye-level at a three-quarter angle, 85mm, f/3.5, so the six shop photos look like one consistent set."
+    },
+    {
+      "id": "cake-berry-naked",
+      "usedOn": "Shop: Berry Naked card and product page",
+      "alt": "Semi-naked vanilla cake with golden sponge showing through, piled with fresh berries and small white flowers",
+      "width": 1000,
+      "height": 1000,
+      "aspectRatio": "1:1",
+      "prompt": "Three-layer semi-naked vanilla bean cake with a thin scraped coat of cream cheese frosting so the golden sponge shows through, topped with a generous pile of raspberries, strawberries and blueberries, a dusting of icing sugar and two or three small white flowers. Light wooden cake stand, airy morning light, cream background. Square 1:1 product photo, the whole cake centred with a little breathing room on all sides, camera slightly above eye-level at a three-quarter angle, 85mm, f/3.5, so the six shop photos look like one consistent set."
+    },
+    {
+      "id": "cake-red-velvet",
+      "usedOn": "Shop: Red Velvet card and product page",
+      "alt": "Red velvet cake in white cream cheese frosting, topped with red velvet crumbs and fresh raspberries, with a slice cut to show red and white layers",
+      "width": 1000,
+      "height": 1000,
+      "aspectRatio": "1:1",
+      "prompt": "Round red velvet cake with smooth white cream cheese frosting, the top edge sprinkled with a ring of red velvet crumbs and a few fresh raspberries. One neat slice removed and set on a small cream plate in front, showing deep red sponge layers with white cream cheese between them. White ceramic stand, cream background. Square 1:1 product photo, the whole cake centred with a little breathing room on all sides, camera slightly above eye-level at a three-quarter angle, 85mm, f/3.5, so the six shop photos look like one consistent set."
+    },
+    {
+      "id": "cake-salted-caramel",
+      "usedOn": "Shop: Salted Caramel Coffee card and product page",
+      "alt": "Coffee sponge cake in caramel buttercream with a glossy salted caramel drip, topped with buttercream swirls and caramel shards",
+      "width": 1000,
+      "height": 1000,
+      "aspectRatio": "1:1",
+      "prompt": "Round coffee sponge cake in light caramel-brown buttercream with a glossy amber salted caramel drip down the sides, topped with piped buttercream swirls, small shards of golden caramel brittle and a few flakes of sea salt. A small jug of caramel sauce blurred behind. Pale ceramic stand, warm cream background. Square 1:1 product photo, the whole cake centred with a little breathing room on all sides, camera slightly above eye-level at a three-quarter angle, 85mm, f/3.5, so the six shop photos look like one consistent set."
     }
   ]
 }
