@@ -1,7 +1,8 @@
 import { randomBytes } from "node:crypto";
 import { z } from "zod";
 import { mask, orderRequestSchema, orderTotal, priceItem, type Order } from "@/lib/order";
-import { orderSecret, signToken } from "@/lib/signed-link";
+import { emailNewOrder } from "@/lib/order-messages";
+import { adminKey, orderSecret, signToken } from "@/lib/signed-link";
 
 // No 0/O or 1/I, so the number is easy to read out over the phone.
 const ALPHABET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
@@ -48,16 +49,22 @@ export async function POST(request: Request) {
     total: orderTotal(pricedItems),
   };
 
-  // No payment and no messages yet: the baker confirms the cake first, then the invoice goes out.
+  // No payment and nothing to the customer yet: the baker accepts the cake first, then the invoice goes out.
   console.info(
     `[orders] ${order.number}: order request received (${pricedItems.length} item(s), ₹${order.total}, pickup ${pickupDate}). ` +
       `Invoice will be sent to ${mask(email)} and ${mask(phone)} after confirmation — nothing sent now.`,
   );
-  // Stands in for the "new order" alert to the bakery: the signed link carries the order to the admin page.
+  // There is no database: the bakery's link carries the signed order, plus a key that opens this order alone.
   if (orderSecret()) {
     const adminLink = new URL(`/admin/orders/${order.number}`, request.url);
     adminLink.searchParams.set("order", signToken("pending", order));
-    console.info(`[orders] ${order.number}: review and confirm at ${adminLink}`);
+    adminLink.searchParams.set("key", adminKey(order.number));
+    try {
+      await emailNewOrder(order, adminLink.toString());
+    } catch (error) {
+      // The email is the only copy of the order, so keep the link where the bakery can still find it.
+      console.error(`[orders] ${order.number}: couldn't email the bakery (${error}). Review it at ${adminLink}`);
+    }
   } else {
     console.warn(`[orders] ${order.number}: ORDER_SECRET is not set, so there is no admin link to confirm this order.`);
   }

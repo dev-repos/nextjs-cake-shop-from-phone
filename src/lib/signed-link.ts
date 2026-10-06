@@ -28,6 +28,24 @@ export function signToken(kind: Kind, payload: unknown): string {
   return `${body}.${hmac(secret, body)}`;
 }
 
+/**
+ * The key in the bakery's link for one order: an HMAC of the order number, so it opens that
+ * order's admin page and no other, and can't be worked out from the number without ORDER_SECRET.
+ * The "admin-key:" prefix can't occur in a token body (base64url), so a key never doubles as a signature.
+ */
+export function adminKey(orderNumber: string): string {
+  const secret = orderSecret();
+  if (!secret) throw new Error("ORDER_SECRET is not set.");
+  return hmac(secret, `admin-key:${orderNumber}`);
+}
+
+export function adminKeyMatches(orderNumber: string, key: unknown): boolean {
+  if (!orderSecret() || typeof key !== "string") return false;
+  const expected = Buffer.from(adminKey(orderNumber));
+  const given = Buffer.from(key);
+  return expected.length === given.length && timingSafeEqual(expected, given);
+}
+
 /** The payload if the token is ours, of this kind and the right shape; otherwise null. */
 export function verifyToken<T extends z.ZodType>(kind: Kind, token: unknown, schema: T): z.infer<T> | null {
   const secret = orderSecret();

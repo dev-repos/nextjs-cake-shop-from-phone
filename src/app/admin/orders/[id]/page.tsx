@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { OrderSummary } from "@/components/order-items";
-import { adminEnabled, isAdmin } from "@/lib/admin-auth";
 import { formatDate, orderSchema } from "@/lib/order";
-import { verifyToken } from "@/lib/signed-link";
-import { ConfirmForm, SignInForm } from "./forms";
+import { adminKeyMatches, verifyToken } from "@/lib/signed-link";
+import { ConfirmForm } from "./forms";
 
-export const metadata: Metadata = { title: "Confirm order", robots: { index: false, follow: false } };
+export const metadata: Metadata = {
+  title: "Confirm order",
+  robots: { index: false, follow: false },
+  // The URL holds this order's key; don't pass it on to other sites.
+  referrer: "no-referrer",
+};
 
 export default async function AdminOrderPage({ params, searchParams }: PageProps<"/admin/orders/[id]">) {
   const { id } = await params;
-  const { order: token } = await searchParams;
+  // The new-order email links here with the signed order and the key made for this order alone.
+  const { order: token, key } = await searchParams;
 
   return (
     <div className="mx-auto max-w-2xl space-y-6 px-4 pb-12 pt-6 sm:px-6 md:pb-20 md:pt-10">
@@ -20,27 +25,17 @@ export default async function AdminOrderPage({ params, searchParams }: PageProps
           Order {id}
         </h1>
       </div>
-      <AdminBody id={id} token={token} />
+      <AdminBody id={id} token={token} adminKey={key} />
     </div>
   );
 }
 
-async function AdminBody({ id, token }: { id: string; token: string | string[] | undefined }) {
-  if (!adminEnabled()) {
-    return <Card>The bakery admin is switched off. Set ADMIN_TOKEN on the server to use it.</Card>;
-  }
-  if (!(await isAdmin())) {
-    return (
-      <Card>
-        <p className="mb-4">Sign in with the bakery&apos;s admin token to review this order.</p>
-        <SignInForm />
-      </Card>
-    );
-  }
+type Param = string | string[] | undefined;
 
+function AdminBody({ id, token, adminKey }: { id: string; token: Param; adminKey: Param }) {
   const order = verifyToken("pending", token, orderSchema);
-  if (typeof token !== "string" || !order || order.number !== id) {
-    return <Card>This order link isn&apos;t valid. Open the link from the new-order alert again.</Card>;
+  if (typeof token !== "string" || typeof adminKey !== "string" || order?.number !== id || !adminKeyMatches(id, adminKey)) {
+    return <Card>This order link isn&apos;t valid. Open the link from the new-order email again.</Card>;
   }
 
   const { customer, invoiceTo } = order;
@@ -66,7 +61,7 @@ async function AdminBody({ id, token }: { id: string; token: string | string[] |
         )}
       </dl>
       <OrderSummary items={order.items} total={order.total} />
-      <ConfirmForm token={token} />
+      <ConfirmForm token={token} adminKey={adminKey} />
     </>
   );
 }
