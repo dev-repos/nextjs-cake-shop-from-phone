@@ -27,7 +27,7 @@ export default function ServicesPage() {
               <a
                 key={s.slug}
                 href={`#${s.slug}`}
-                className="rounded-full bg-cream-50 px-4 py-2 text-sm font-medium text-cocoa-700 ring-1 ring-cocoa-900/10 hover:bg-raspberry-100 hover:text-raspberry-700"
+                className="inline-flex min-h-11 items-center rounded-full bg-cream-50 px-4 text-sm font-medium text-cocoa-700 ring-1 ring-cocoa-900/10 hover:bg-raspberry-100 hover:text-raspberry-700"
               >
                 {s.name}
               </a>

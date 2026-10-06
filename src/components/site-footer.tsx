@@ -15,18 +15,18 @@ export function SiteFooter() {
 
         <div>
           <h2 className="text-sm font-semibold uppercase tracking-wider text-cream-300">Explore</h2>
-          <ul className="mt-3 space-y-2 text-sm">
+          <ul className="mt-2 text-sm">
             <li>
-              <Link href="/" className="hover:text-raspberry-100">Home</Link>
+              <Link href="/" className="inline-flex min-h-11 items-center hover:text-raspberry-100">Home</Link>
             </li>
             <li>
-              <Link href="/cakes" className="hover:text-raspberry-100">Shop cakes</Link>
+              <Link href="/cakes" className="inline-flex min-h-11 items-center hover:text-raspberry-100">Shop cakes</Link>
             </li>
             <li>
-              <Link href="/services" className="hover:text-raspberry-100">Services &amp; prices</Link>
+              <Link href="/services" className="inline-flex min-h-11 items-center hover:text-raspberry-100">Services &amp; prices</Link>
             </li>
             <li>
-              <Link href="/design" className="hover:text-raspberry-100">Design your cake</Link>
+              <Link href="/design" className="inline-flex min-h-11 items-center hover:text-raspberry-100">Design your cake</Link>
             </li>
           </ul>
         </div>
@@ -37,7 +37,7 @@ export function SiteFooter() {
             <p>12 Baker&apos;s Lane, Indiranagar, Bengaluru</p>
             <p>Tue–Sun, 10 am – 7 pm</p>
             <p>
-              <a href="mailto:hello@frostwell.example" className="hover:text-raspberry-100">
+              <a href="mailto:hello@frostwell.example" className="inline-flex min-h-11 items-center hover:text-raspberry-100">
                 hello@frostwell.example
               </a>
             </p>
