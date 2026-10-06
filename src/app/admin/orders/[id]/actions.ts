@@ -1,27 +1,12 @@
 "use server";
 
-import { cookies, headers } from "next/headers";
-import { ADMIN_COOKIE, isAdmin, sessionValue, tokenMatches } from "@/lib/admin-auth";
-import { logInvoice } from "@/lib/invoice";
+import { headers } from "next/headers";
+import type { Delivery } from "@/lib/email";
 import { orderSchema, type ConfirmedOrder } from "@/lib/order";
-import { signToken, verifyToken } from "@/lib/signed-link";
+import { sendInvoice } from "@/lib/order-messages";
+import { adminKeyMatches, signToken, verifyToken } from "@/lib/signed-link";
 
-export type SignInState = { error?: string };
-
-export async function signIn(_prev: SignInState, formData: FormData): Promise<SignInState> {
-  if (!tokenMatches(String(formData.get("token") ?? ""))) return { error: "That admin token isn't right." };
-  (await cookies()).set(ADMIN_COOKIE, sessionValue(), {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    path: "/admin",
-    maxAge: 8 * 60 * 60,
-  });
-  // Setting the cookie re-renders the page, which now shows the order.
-  return {};
-}
-
-export type ConfirmState = { link?: string; error?: string };
+export type ConfirmState = { link?: string; email?: Delivery | "failed"; error?: string };
 
 async function siteOrigin() {
   const h = await headers();
@@ -30,11 +15,10 @@ async function siteOrigin() {
   return `${proto}://${host}`;
 }
 
-/** Server Actions are public endpoints, so this re-checks the admin cookie and the order signature. */
-export async function confirmOrder(pendingToken: string): Promise<ConfirmState> {
-  if (!(await isAdmin())) return { error: "Sign in again to confirm orders." };
+/** Server Actions are public endpoints, so this re-checks the order signature and the order's own key. */
+export async function confirmOrder(pendingToken: string, key: string): Promise<ConfirmState> {
   const order = verifyToken("pending", pendingToken, orderSchema);
-  if (!order) return { error: "This order link isn't valid." };
+  if (!order || !adminKeyMatches(order.number, key)) return { error: "This order link isn't valid." };
 
   const confirmed: ConfirmedOrder = {
     number: order.number,
@@ -45,9 +29,14 @@ export async function confirmOrder(pendingToken: string): Promise<ConfirmState> 
     items: order.items,
     total: order.total,
   };
+  // The customer's own token: it shows the confirmed order and its Pay section, and can't open the admin page.
   const link = new URL(`/orders/${order.number}`, await siteOrigin());
   link.searchParams.set("t", signToken("confirmed", confirmed));
 
-  logInvoice(order, link.toString());
-  return { link: link.toString() };
+  try {
+    return { link: link.toString(), email: await sendInvoice(order, link.toString()) };
+  } catch (error) {
+    console.error(`[orders] ${order.number}: couldn't email the invoice (${error}).`);
+    return { link: link.toString(), email: "failed" };
+  }
 }
