@@ -20,7 +20,17 @@ npm run lint
 npm run build
 ```
 
-Next.js 16 (App Router) + TypeScript + Tailwind CSS v4. Pages: `/` (landing), `/services`, `/cakes` (shop) with a customiser at `/cakes/<slug>`, and a `/design` placeholder.
+Next.js 16 (App Router) + TypeScript + Tailwind CSS v4. Pages: `/` (landing), `/services`, `/cakes` (shop) with a customiser at `/cakes/<slug>`, `/cart`, `/checkout`, `/orders/<number>`, the demo-only `/admin/orders/<number>`, and a `/design` placeholder.
+
+## Confirming an order and paying (demo)
+
+There is no database yet, so orders travel in links signed with `ORDER_SECRET` (copy `.env.example` to `.env.local`).
+
+1. A customer sends an order request. The server log prints a signed link to `/admin/orders/<number>`: the stand-in for the bakery's new-order alert.
+2. The bakery opens it, signs in with `ADMIN_TOKEN` and taps **Confirm**. That makes the customer's confirmed-order link and logs the invoice email and text that would carry it. Nothing is sent.
+3. The link opens the order as **Confirmed** with a Pay section: a `upi://pay` button and QR code (to the fake `demo.only@invalid` unless `UPI_VPA` is set), and a PayPal option that only logs the Invoicing API requests it would make.
+
+No real money moves anywhere.
 
 ## Images
 

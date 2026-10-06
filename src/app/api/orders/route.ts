@@ -1,6 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { z } from "zod";
-import { orderRequestSchema, orderTotal, priceItem, type Order } from "@/lib/order";
+import { mask, orderRequestSchema, orderTotal, priceItem, type Order } from "@/lib/order";
+import { orderSecret, signToken } from "@/lib/signed-link";
 
 // No 0/O or 1/I, so the number is easy to read out over the phone.
 const ALPHABET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
@@ -9,8 +10,6 @@ function orderNumber(today: string) {
   const suffix = Array.from(randomBytes(5), (b) => ALPHABET[b % ALPHABET.length]).join("");
   return `FW-${today.slice(2).replaceAll("-", "")}-${suffix}`;
 }
-
-const mask = (value: string) => `${value.slice(0, 2)}…${value.slice(-2)}`;
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -54,6 +53,14 @@ export async function POST(request: Request) {
     `[orders] ${order.number}: order request received (${pricedItems.length} item(s), ₹${order.total}, pickup ${pickupDate}). ` +
       `Invoice will be sent to ${mask(email)} and ${mask(phone)} after confirmation — nothing sent now.`,
   );
+  // Stands in for the "new order" alert to the bakery: the signed link carries the order to the admin page.
+  if (orderSecret()) {
+    const adminLink = new URL(`/admin/orders/${order.number}`, request.url);
+    adminLink.searchParams.set("order", signToken("pending", order));
+    console.info(`[orders] ${order.number}: review and confirm at ${adminLink}`);
+  } else {
+    console.warn(`[orders] ${order.number}: ORDER_SECRET is not set, so there is no admin link to confirm this order.`);
+  }
 
   return Response.json(order, { status: 201 });
 }

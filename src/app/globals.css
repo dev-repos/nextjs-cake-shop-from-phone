@@ -28,6 +28,19 @@ body {
   color: var(--color-cocoa-900);
 }
 
+/*
+ * Phones read at arm's length: no text under 16px below the md breakpoint.
+ * Tailwind's text-xs and text-sm read these variables, so desktop keeps its smaller sizes.
+ */
+@media (width < 48rem) {
+  :root {
+    --text-xs: 1rem;
+    --text-xs--line-height: 1.5;
+    --text-sm: 1rem;
+    --text-sm--line-height: 1.5;
+  }
+}
+
 /* Keep the footer clear of the fixed "Add to cart" bar on phones. */
 @media (width < 48rem) {
   body:has([data-cart-bar]) {

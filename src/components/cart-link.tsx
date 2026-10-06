@@ -17,7 +17,7 @@ export function CartLink() {
         <circle cx="17.5" cy="20" r="1.2" />
       </svg>
       {count > 0 && (
-        <span className="absolute right-0 top-0.5 flex min-w-5 items-center justify-center rounded-full bg-raspberry-600 px-1 text-xs font-semibold tabular-nums text-white">
+        <span className="absolute right-0 top-0.5 flex min-w-5 items-center justify-center rounded-full bg-raspberry-600 px-1 text-[0.75rem] leading-5 font-semibold tabular-nums text-white">
           {count}
         </span>
       )}

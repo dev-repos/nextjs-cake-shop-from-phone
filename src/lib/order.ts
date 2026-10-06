@@ -17,13 +17,15 @@ export const cartItemSchema = z.object({
 export type CartItem = z.infer<typeof cartItemSchema>;
 
 /** A cart item with names and prices looked up from the catalogue. */
-export type PricedItem = CartItem & {
-  name: string;
-  flavour: string;
-  frosting: string;
-  unitPrice: number;
-  lineTotal: number;
-};
+export const pricedItemSchema = cartItemSchema.extend({
+  name: z.string(),
+  flavour: z.string(),
+  frosting: z.string(),
+  unitPrice: z.number(),
+  lineTotal: z.number(),
+});
+
+export type PricedItem = z.infer<typeof pricedItemSchema>;
 
 /**
  * Prices an item from the catalogue, never from what the browser sent.
@@ -97,16 +99,30 @@ export const orderRequestSchema = customerSchema.extend({
 
 export type OrderRequest = z.input<typeof orderRequestSchema>;
 
-export type OrderStatus = "awaiting-confirmation";
-
 /** What /api/orders returns and the browser keeps until there is a database. */
-export type Order = {
-  number: string;
-  createdAt: string;
-  status: OrderStatus;
-  customer: { name: string; pickupDate: string; notes: string };
+export const orderSchema = z.object({
+  number: z.string(),
+  createdAt: z.string(),
+  status: z.literal(["awaiting-confirmation", "confirmed"]),
+  customer: z.object({ name: z.string(), pickupDate: z.string(), notes: z.string() }),
   /** Where the invoice goes once we confirm the cake. */
-  invoiceTo: { email: string; phone: string };
-  items: PricedItem[];
-  total: number;
-};
+  invoiceTo: z.object({ email: z.string(), phone: z.string() }),
+  items: z.array(pricedItemSchema),
+  total: z.number(),
+});
+
+export type Order = z.infer<typeof orderSchema>;
+export type OrderStatus = Order["status"];
+
+/**
+ * What the customer's confirmed-order link carries. Leaves out the phone number;
+ * keeps the email because a PayPal invoice is addressed to it.
+ */
+export const confirmedOrderSchema = orderSchema
+  .omit({ status: true, invoiceTo: true })
+  .extend({ confirmedAt: z.string(), email: z.string() });
+
+export type ConfirmedOrder = z.infer<typeof confirmedOrderSchema>;
+
+/** Shortens an email or phone for logs, e.g. "ra…om". */
+export const mask = (value: string) => `${value.slice(0, 2)}…${value.slice(-2)}`;
